@@ -1,10 +1,10 @@
-export const idlFactory = ({ IDL }) => {
-  const TokenId = IDL.Nat
+export const price_oracle_idlFactory = ({ IDL }) => {
+  const TokenId = IDL.Nat;
   const AssetClass = IDL.Variant({
     Cryptocurrency: IDL.Null,
     FiatCurrency: IDL.Null,
-  })
-  const Asset = IDL.Record({ class: AssetClass, symbol: IDL.Text })
+  });
+  const Asset = IDL.Record({ class: AssetClass, symbol: IDL.Text });
   const PairConfig = IDL.Record({
     deleted: IDL.Bool,
     tokens: IDL.Tuple(TokenId, TokenId),
@@ -15,8 +15,8 @@ export const idlFactory = ({ IDL }) => {
       sonic: IDL.Record({ id: IDL.Text }),
       icdex: IDL.Record({ canister: IDL.Principal }),
     }),
-  })
-  const PairId = IDL.Nat
+  });
+  const PairId = IDL.Nat;
   const SnsConfig = IDL.Record({
     root: IDL.Principal,
     swap: IDL.Principal,
@@ -26,14 +26,14 @@ export const idlFactory = ({ IDL }) => {
         token_id: TokenId,
         owner: IDL.Principal,
         subaccount: IDL.Vec(IDL.Nat8),
-      })
+      }),
     ),
     index: IDL.Principal,
     governance: IDL.Principal,
     treasury_subaccount: IDL.Vec(IDL.Nat8),
-  })
-  const TokenLocking = IDL.Variant({ sns: SnsConfig, none: IDL.Null })
-  const Time = IDL.Int
+  });
+  const TokenLocking = IDL.Variant({ sns: SnsConfig, none: IDL.Null });
+  const Time = IDL.Int;
   const TokenDetail = IDL.Variant({
     link: IDL.Record({ href: IDL.Text, name: IDL.Text }),
     sns_sale: IDL.Record({
@@ -41,7 +41,7 @@ export const idlFactory = ({ IDL }) => {
       sold_tokens: IDL.Nat,
       price_usd: IDL.Float64,
     }),
-  })
+  });
   const TokenConfig = IDL.Record({
     decimals: IDL.Nat,
     deleted: IDL.Bool,
@@ -54,12 +54,12 @@ export const idlFactory = ({ IDL }) => {
     }),
     details: IDL.Vec(TokenDetail),
     symbol: IDL.Text,
-  })
+  });
   const LatestTokenRow = IDL.Tuple(
     IDL.Tuple(TokenId, TokenId),
     IDL.Text,
-    IDL.Float64
-  )
+    IDL.Float64,
+  );
   const LatestExtendedTokenTickItem = IDL.Record({
     fee: IDL.Nat,
     dissolving_30d: IDL.Nat,
@@ -70,7 +70,7 @@ export const idlFactory = ({ IDL }) => {
     dissolving_1y: IDL.Nat,
     total_supply: IDL.Nat,
     treasury: IDL.Nat,
-  })
+  });
   const LatestExtendedRate = IDL.Record({
     to_token: TokenId,
     rate: IDL.Float64,
@@ -79,25 +79,25 @@ export const idlFactory = ({ IDL }) => {
     depth2: IDL.Float64,
     depth8: IDL.Float64,
     symbol: IDL.Text,
-  })
+  });
   const LatestExtendedToken = IDL.Record({
     id: TokenId,
     last: IDL.Opt(LatestExtendedTokenTickItem),
     config: TokenConfig,
     rates: IDL.Vec(LatestExtendedRate),
-  })
+  });
   const Frame = IDL.Variant({
     t1d: IDL.Null,
     t1h: IDL.Null,
     t5m: IDL.Null,
-  })
-  const High = IDL.Float64
-  const Low = IDL.Float64
-  const LastBid = IDL.Float64
-  const LastAsk = IDL.Float64
-  const Volume24 = IDL.Float64
-  const DepthBid50 = IDL.Vec(IDL.Float64)
-  const DepthAsk50 = IDL.Vec(IDL.Float64)
+  });
+  const High = IDL.Float64;
+  const Low = IDL.Float64;
+  const LastBid = IDL.Float64;
+  const LastAsk = IDL.Float64;
+  const Volume24 = IDL.Float64;
+  const DepthBid50 = IDL.Vec(IDL.Float64);
+  const DepthAsk50 = IDL.Vec(IDL.Float64);
   const TickItem = IDL.Tuple(
     High,
     Low,
@@ -105,10 +105,10 @@ export const idlFactory = ({ IDL }) => {
     LastAsk,
     Volume24,
     DepthBid50,
-    DepthAsk50
-  )
-  const TickShared = IDL.Vec(IDL.Opt(TickItem))
-  const GetError = IDL.Variant({ invalid_frame: IDL.Null })
+    DepthAsk50,
+  );
+  const TickShared = IDL.Vec(IDL.Opt(TickItem));
+  const GetError = IDL.Variant({ invalid_frame: IDL.Null });
   const Result_3 = IDL.Variant({
     ok: IDL.Record({
       first: Time,
@@ -117,21 +117,21 @@ export const idlFactory = ({ IDL }) => {
       updated: Time,
     }),
     err: GetError,
-  })
+  });
   const LockingTick = IDL.Record({
     not_dissolving: IDL.Vec(IDL.Nat),
     other_treasuries: IDL.Vec(IDL.Tuple(TokenId, IDL.Nat)),
     total_locked: IDL.Nat,
     dissolving: IDL.Vec(IDL.Nat),
     treasury: IDL.Nat,
-  })
+  });
   const TokenTickItem = IDL.Record({
     fee: IDL.Nat,
     locking: IDL.Opt(LockingTick),
     circulating_supply: IDL.Nat,
     total_supply: IDL.Nat,
-  })
-  const TokenTickShared = IDL.Vec(IDL.Opt(TokenTickItem))
+  });
+  const TokenTickShared = IDL.Vec(IDL.Opt(TokenTickItem));
   const Result_2 = IDL.Variant({
     ok: IDL.Record({
       first: Time,
@@ -140,7 +140,7 @@ export const idlFactory = ({ IDL }) => {
       updated: Time,
     }),
     err: GetError,
-  })
+  });
   const ErrorCode = IDL.Variant({
     canister_error: IDL.Null,
     call_error: IDL.Record({ err_code: IDL.Nat32 }),
@@ -149,28 +149,28 @@ export const idlFactory = ({ IDL }) => {
     canister_reject: IDL.Null,
     destination_invalid: IDL.Null,
     system_fatal: IDL.Null,
-  })
-  const ErrorLine = IDL.Tuple(Time, IDL.Text, ErrorCode, IDL.Text)
-  const Result = IDL.Variant({ ok: IDL.Null, err: IDL.Text })
+  });
+  const ErrorLine = IDL.Tuple(Time, IDL.Text, ErrorCode, IDL.Text);
+  const Result = IDL.Variant({ ok: IDL.Null, err: IDL.Text });
   const OraclePushError = IDL.Variant({
     not_in_validator_set: IDL.Null,
     too_early: IDL.Null,
-  })
-  const Result_1 = IDL.Variant({ ok: Time, err: OraclePushError })
+  });
+  const Result_1 = IDL.Variant({ ok: Time, err: OraclePushError });
   const NodeInfoShared = IDL.Record({
     bad: IDL.Nat,
     principal: IDL.Principal,
     good: IDL.Nat,
     last: Time,
     name: IDL.Text,
-  })
+  });
   return IDL.Service({
     controller_addPair: IDL.Func([PairConfig], [PairId], []),
     controller_addToken: IDL.Func([TokenConfig], [TokenId], []),
     controller_collect_token: IDL.Func([TokenId], [], []),
     controller_deletePair: IDL.Func([PairId], [], []),
     controller_deleteToken: IDL.Func([TokenId], [], []),
-    dbg_counter: IDL.Func([], [IDL.Vec(IDL.Nat)], ["query"]),
+    dbg_counter: IDL.Func([], [IDL.Vec(IDL.Nat)], ['query']),
     get_config: IDL.Func(
       [],
       [
@@ -179,35 +179,35 @@ export const idlFactory = ({ IDL }) => {
           pairs: IDL.Vec(PairConfig),
         }),
       ],
-      ["query"]
+      ['query'],
     ),
-    get_latest: IDL.Func([], [IDL.Vec(LatestTokenRow)], ["query"]),
+    get_latest: IDL.Func([], [IDL.Vec(LatestTokenRow)], ['query']),
     get_latest_extended: IDL.Func(
       [],
       [IDL.Vec(LatestExtendedToken)],
-      ["query"]
+      ['query'],
     ),
     get_pairs: IDL.Func(
       [Frame, IDL.Vec(IDL.Nat), IDL.Opt(Time), IDL.Opt(Time)],
       [Result_3],
-      ["query"]
+      ['query'],
     ),
     get_tokens: IDL.Func(
       [IDL.Vec(IDL.Nat), IDL.Opt(Time), IDL.Opt(Time)],
       [Result_2],
-      ["query"]
+      ['query'],
     ),
-    log_show: IDL.Func([], [IDL.Vec(ErrorLine)], ["query"]),
+    log_show: IDL.Func([], [IDL.Vec(ErrorLine)], ['query']),
     oracle_add: IDL.Func([IDL.Text, IDL.Principal], [Result], []),
     oracle_push: IDL.Func(
       [IDL.Record({ data: IDL.Vec(IDL.Tuple(IDL.Text, IDL.Float64)) })],
       [Result_1],
-      []
+      [],
     ),
     oracle_rem: IDL.Func([IDL.Principal], [Result], []),
-    oracles_get: IDL.Func([], [IDL.Vec(NodeInfoShared)], ["query"]),
-  })
-}
+    oracles_get: IDL.Func([], [IDL.Vec(NodeInfoShared)], ['query']),
+  });
+};
 export const init = ({ IDL }) => {
-  return []
-}
+  return [];
+};

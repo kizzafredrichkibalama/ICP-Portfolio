@@ -29,17 +29,39 @@ import Dashboard from './components/Dashboard'
 import Index from './components/Index'
 import SharedLayout from './components/SharedLayout'
 import { Principal } from '@dfinity/principal'
+import useGetTokenPrices from './components/Hooks/useGetTokenPrices'
 const client = createClient({
   providers: defaultProviders,
 })
 
 function App() {
+  const navigate = useNavigate()
   const dispatch = useDispatch()
+  const { getTokenPrices } = useGetTokenPrices()
 
   const connectionInstance = useConnect({
-    onConnect: async (connObj) => {
+    onConnect: async () => {},
+    onDisconnect: () => {
+      dispatch(setIsConnected(false))
+      dispatch(setPrincipalID(null))
+      navigate('/')
+    },
+  })
+
+  console.log(connectionInstance)
+  console.log(connectionInstance.principal)
+
+  useEffect(() => {
+    if (!connectionInstance.principal || !connectionInstance.isConnected) return
+    initialAppLoad(connectionInstance)
+    getTokenPrices()
+    navigate('/dashboard')
+  }, [connectionInstance.isConnected])
+
+  async function initialAppLoad(connObj) {
+    try {
       //create the backend actor and fetch the user ids
-      console.log('conn onj :', connObj.activeProvider.createActor)
+      console.log('conn onj :', connObj)
       const { value: actor } = await connObj?.activeProvider?.createActor(
         backendCanisterID,
         idlFactory,
@@ -54,18 +76,11 @@ function App() {
       dispatch(setBackendActor(JSON.stringify(actor)))
       dispatch(setIsConnected(true))
       dispatch(setPrincipalID(connObj.principal))
-      navigate('/dashboard')
-    },
-    onDisconnect: () => {
-      dispatch(setIsConnected(false))
-      dispatch(setPrincipalID(null))
-      navigate('/')
-    },
-  })
+    } catch (error) {
+      console.log('error in loading app contents for the first time :', error)
+    }
+  }
 
-  console.log(connectionInstance)
-  const { isConnected } = useDispatch((state) => state.plug)
-  const navigate = useNavigate()
   return (
     <>
       <Routes>
