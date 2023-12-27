@@ -25,11 +25,17 @@ import {
   setUserIDs,
   setBackendActor,
 } from './features/plugSlice'
-import Dashboard from './components/Dashboard'
+import Dashboard from './components/Dashboard/Dashboard'
 import Index from './components/Index'
 import SharedLayout from './components/SharedLayout'
 import { Principal } from '@dfinity/principal'
 import useGetTokenPrices from './components/Hooks/useGetTokenPrices'
+import Recieve from './components/Recieve/index'
+import Send from './components/Send/index'
+import Buy from './components/Buy/index'
+import SharedDashboard from './components/Dashboard/SharedDashboard'
+import Profile from './components/Profile'
+
 const client = createClient({
   providers: defaultProviders,
 })
@@ -55,6 +61,7 @@ function App() {
     if (!connectionInstance.principal || !connectionInstance.isConnected) return
     initialAppLoad(connectionInstance)
     getTokenPrices()
+
     navigate('/dashboard')
   }, [connectionInstance.isConnected])
 
@@ -86,7 +93,13 @@ function App() {
       <Routes>
         <Route path="/" element={<SharedLayout />}>
           <Route index element={<Index />} />
-          <Route path="dashboard" element={<Dashboard />} />
+          <Route path="dashboard" element={<SharedDashboard />}>
+            <Route index element={<Dashboard />} />
+            <Route path="recieve" element={<Recieve />} />
+            <Route path="send" element={<Send />} />
+            <Route path="buy" element={<Buy />} />
+            <Route path="profile" element={<Profile />} />
+          </Route>
         </Route>
       </Routes>
     </>

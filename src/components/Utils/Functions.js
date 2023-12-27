@@ -389,3 +389,19 @@ export function formatExtendedTokenData(tokenName, extendedData) {
     console.log('error in extended :', e);
   }
 }
+
+
+
+export async function copyToClipboard(text) {
+  if (!navigator.clipboard) {
+    // Clipboard API not available
+    return;
+  }
+
+  try {
+    await navigator.clipboard.writeText(text);
+    console.log('Text copied to clipboard :', text);
+  } catch (err) {
+    console.error('Failed to copy: ', err);
+  }
+}

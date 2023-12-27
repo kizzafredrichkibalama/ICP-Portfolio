@@ -54,7 +54,12 @@ const NavBar = () => {
                 <ConnectDialog />
               </div>
             </div>
-          ) : null}
+          ) : (
+            <>
+              <ConnectButton />
+              <ConnectDialog />
+            </>
+          )}
         </div>
       </nav>
     </div>

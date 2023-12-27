@@ -164,11 +164,11 @@ dfx deploy internet_identity --network "${NETWORK}"
 
 ##deploy the users canister
 echo "Deploying the userCanister"
-dfx deploy userCanister --network "${NETWORK}"
+dfx deploy userCanister --network "${NETWORK}" --mode=reinstall -y
 
 ## deploy the monitor canister
 echo "Deploying the  monitorCanister"
-dfx deploy monitorCanister --network "${NETWORK}"
+dfx deploy monitorCanister --network "${NETWORK}" --mode=reinstall -y
 
 echo "Deploying the backend canister"
 ##dfx deploy backend --network "${NETWORK}" --argument '(variant{Testnet})'
@@ -197,7 +197,7 @@ echo "Done with the deployment"
 # dfx canister --network local call ICP_ledger icrc1_transfer '
 #   (record {
 #     to=(record {
-#       owner=(principal "xowmd-grmzf-2dacu-dlg3b-3pqmc-xyu7k-xwr5s-dngy4-uvvlq-kycr4-rqe")
+#       owner=(principal "ewbs4-24msb-e266v-n77o7-trfif-w6mqf-pfqyt-y4k7v-n4vyj-czljs-7qe")
 #     });
 #     amount=500_000
 #   })
