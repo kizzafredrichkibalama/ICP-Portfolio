@@ -18,7 +18,6 @@ import { Connect2ICProvider, useConnect } from '@connect2ic/react'
 import '@connect2ic/core/style.css'
 import { useDispatch } from 'react-redux'
 import {
-  setChanges,
   setIsConnected,
   setPrincipalID,
   setActiveProvider,

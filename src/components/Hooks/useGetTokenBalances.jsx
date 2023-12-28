@@ -3,6 +3,7 @@ import { createActor } from '../Utils/createActor'
 import {
   CanisterIDS,
   ProcessData,
+  getLocalCanisterID,
   getUserICPNetWorth,
   transformDataArray,
 } from '../Utils/Functions'
@@ -18,6 +19,7 @@ import {
 const useGetTokenBalances = () => {
   const { tokenPrices } = useSelector((state) => state.info)
   const dispatch = useDispatch()
+  const [singleTokenBalance, setSingleTokenBalance] = useState(null)
 
   const userBalances = []
   async function getAllTokenBalances(userPrincipalsID) {
@@ -79,7 +81,23 @@ const useGetTokenBalances = () => {
     }
   }
 
-  return { getAllTokenBalances }
+  async function getSingleTokenBalance(tokenName, principalID) {
+    if (!principalID) return
+    try {
+      // get the local token ledger
+      const ledgerID = getLocalCanisterID(tokenName)
+      const ledgerActor = createActor(ledgerID, icrcIdlFactory)
+      const balance = await ledgerActor?.icrc1_balance_of({
+        owner: Principal.fromText(principalID),
+        subaccount: [],
+      })
+      setSingleTokenBalance(Number(balance) / 1e8)
+    } catch (error) {
+      console.log('error in getting the token balance :', error)
+    }
+  }
+
+  return { getAllTokenBalances, singleTokenBalance, getSingleTokenBalance }
 }
 
 export default useGetTokenBalances

@@ -194,7 +194,7 @@ echo "Done with the deployment"
 
 
 
-# dfx canister --network local call ICP_ledger icrc1_transfer '
+# dfx canister --network local call Chat_ledger icrc1_transfer '
 #   (record {
 #     to=(record {
 #       owner=(principal "ewbs4-24msb-e266v-n77o7-trfif-w6mqf-pfqyt-y4k7v-n4vyj-czljs-7qe")
@@ -202,3 +202,7 @@ echo "Done with the deployment"
 #     amount=500_000
 #   })
 # '
+
+
+
+# txsrk-ebkng-zq2zz-x77go-anqz5-pcrm4-73555-j6uhl-5yavj-jiplp-3ae
