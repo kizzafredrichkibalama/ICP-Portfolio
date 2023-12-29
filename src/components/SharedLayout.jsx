@@ -5,7 +5,7 @@ import NavBar from './NavBar'
 const SharedLayout = () => {
   return (
     <>
-      <NavBar />
+      {/* <NavBar /> */}
       <Suspense fallback={<div>loading ....</div>}>
         <Outlet />
       </Suspense>

@@ -16,7 +16,7 @@ import { defaultProviders } from '@connect2ic/core/providers'
 import { createClient } from '@connect2ic/core'
 import { Connect2ICProvider, useConnect } from '@connect2ic/react'
 import '@connect2ic/core/style.css'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import {
   setIsConnected,
   setPrincipalID,
@@ -44,6 +44,7 @@ function App() {
   const dispatch = useDispatch()
   const { getTokenPrices } = useGetTokenPrices()
 
+  const { changes } = useSelector((state) => state.plug)
   const connectionInstance = useConnect({
     onConnect: async () => {},
     onDisconnect: () => {
@@ -62,7 +63,7 @@ function App() {
     getTokenPrices()
 
     navigate('/dashboard')
-  }, [connectionInstance.isConnected])
+  }, [connectionInstance.isConnected, changes])
 
   async function initialAppLoad(connObj) {
     try {
@@ -72,7 +73,6 @@ function App() {
         backendCanisterID,
         idlFactory,
       )
-
       //get all the user addresses
       const addresses = await actor.getAllUserICPAddresses(
         Principal.fromText(connObj.principal),

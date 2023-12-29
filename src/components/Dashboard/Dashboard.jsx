@@ -26,8 +26,8 @@ const Dashboard = () => {
 
   return (
     <div
-      style={{ backgroundColor: '#2D3348', minHeight: '80vh' }}
-      className="flex flex-col w-full mt-4 rounded-lg min-h-screen px-4"
+      style={{ backgroundColor: '#2D3348', minHeight: '90vh' }}
+      className="flex flex-col w-full mt-10 rounded-lg min-h-screen px-4"
     >
       <div className="flex justify-between items-center w-full pb-2">
         <div className="flex justify-center items-center text-xl px-2 text-bold">
@@ -68,7 +68,7 @@ const Dashboard = () => {
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Token
               </th>
-              <th className="px-2 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Percentage(%)
               </th>
               <th className=" py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -86,8 +86,8 @@ const Dashboard = () => {
             {percentagePerToken &&
               Object.keys(percentagePerToken).map((token) => (
                 <tr key={token}>
-                  <td className="flex px-6 py-4 text-left">{token}</td>
-                  <td className="text-left flex-col px-10">
+                  <td className="flex px-6 py-4 text-center">{token}</td>
+                  <td className="text-center flex-col px-10">
                     {percentagePerToken[token].percentage}
                   </td>
                   <td className="text-left flex-col px-0">

@@ -19,8 +19,8 @@ const index = () => {
 
   return (
     <div
-      style={{ backgroundColor: '#2D3348', minHeight: '80vh' }}
-      className="flex w-full mt-4 justify-center items-center rounded-lg"
+      style={{ backgroundColor: '#2D3348', minHeight: '90vh' }}
+      className="flex w-full mt-10 justify-center items-center rounded-lg"
     >
       <div
         style={{ backgroundColor: '#11131f', height: '70vh' }}
@@ -30,7 +30,7 @@ const index = () => {
           <div className="flex p-4 text-2xl uppercase border-b-2 w-3/4 justify-center items-center ">
             Recieve
           </div>
-          <div className="flex gap-2">
+          <div className="flex gap-10">
             <div
               className="hover:cursor-pointer"
               onClick={() => setSelecedOption('ICP')}

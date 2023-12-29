@@ -15,18 +15,6 @@ import Nat64 "mo:base/Nat64";
 import Nat "mo:base/Nat";
 import Buffer "mo:base/Buffer";
 
-import EthereumAddress "mo:evm-txs/Address";
-import EthereumTransaction "mo:evm-txs/Transaction";
-import EthereumContext "mo:evm-txs/Context";
-import EthereumAU "mo:evm-txs/utils/ArrayUtils";
-import EthTypes "./ECDSA/Types";
-import IcEcdsaApi "./ECDSA/IcEcdsaApi";
-
-import BTCUtils "./BTC/src/Utils";
-import BTCTypes "./BTC/src/Types";
-import BTCWallet "./BTC/src/BitcoinWallet";
-import BTCAPI "./BTC/src/BitcoinApi";
-
 import MgtCanisterTypes "./INTERFACES/mgt_canister.types";
 import Types "./Types";
 import Oracle "INTERFACES/price_oracle.types";
@@ -36,25 +24,8 @@ import monitorCanister "canister:monitorCanister";
 import usersCanister "canister:userCanister";
 
 
-actor class PWMANAGER(
-  eth_network : IcEcdsaApi.Network,
-  btc_network : BTCTypes.Network,
-) = this {
+actor class PWMANAGER() = this {
 
-  let eth_keyName : Text = switch eth_network {
-    case (#Localhost) "dfx_test_key";
-    case _ "test_key_1";
-  };
-
-  let btc_keyName : Text = switch btc_network {
-    case (#Regtest) "dfx_test_key";
-    case _ "test_key_1";
-  };
-
-  let BTCNetwork : BTCTypes.Network = btc_network;
-  //Defi Aggregator cainster for fetching icp token data
-
-  type EthAddress = Types.EthAddress;
   type ICPAddress = Types.ICPAddress;
   type User = Types.User;
 
@@ -62,12 +33,10 @@ actor class PWMANAGER(
   private stable var CkStartBlock : Nat = 0;
   private stable var latestCKTxnIndex : Nat = 0;
 
-  let icEcdsaApi = IcEcdsaApi.IcEcdsaApi();
-  let ecCtx = EthereumContext.allocECMultContext(null);
   let ic : MgtCanisterTypes.IC = actor ("aaaaa-aa");
 
   //add icp secondary address
-  public shared ({ caller }) func addICPAddress(_nickName : Text, addr : Text) : async Result.Result<EthAddress, Text> {
+  public shared ({ caller }) func addICPAddress(_nickName : Text, addr : Text) : async Result.Result<ICPAddress, Text> {
     let results = await usersCanister.addicpaddress(caller, _nickName : Text, addr : Text);
 
     switch (results) {
@@ -106,97 +75,12 @@ actor class PWMANAGER(
     };
   };
 
-  // get user balance for the icp tokens
-  public func get_user_icrc_balance(user:Principal) : async Result.Result<[(Text, [monitorCanister.BalanceResponse])],Text>{
-    switch(await monitorCanister.get_icrc_token_balances(user)) {
-      case(#ok(value)) {return #ok(value)  };
-      case(#err(error)) {return #err(error) };
-    };
-  };
 
 
+  
 
-  //get principal id transactions from different ledger canisters
-  public func get_user_ids_transactions(user:Principal,token:Text): async Result.Result<[(Text,monitorCanister.GetTransactions)],Text> {
-switch(await monitorCanister.getAddressTransactions(user,token)) {
-  case(#ok(results)) { return #ok(results); };
-  case(#err(error)) { return #err(error); };
-};
-  };
-
-
-  //get all icp transactions for the principal id
-  public func get_icp_transactions(user:Principal) : async Result.Result<[(Text,monitorCanister.GetAccountIdentifierTransactionsResponse)],Text>{
-      switch(await monitorCanister.geticptransactions(user)) {
-        case(#ok(results)) {return #ok(results)  };
-        case(#err(error)) { return #err(error) };
-      };
-  };
-
-  //add new seondary ethereum address
-  public shared ({ caller }) func addEthAddress(_nickName : Text, addr : Text) : async Result.Result<EthAddress, Text> {
-    let results = await usersCanister.addethaddress(caller, _nickName, addr);
-    switch (results) {
-      case (#ok(value)) {
-        return #ok(value);
-      };
-      case (#err(value)) {
-        return #err("Error in adding new eth address");
-      };
-    };
-
-  };
-
-  //delete a secondary address from the list
-  public shared ({ caller }) func deleteEthAdress(addr : Text) : async Result.Result<Text, Text> {
-    let results = await usersCanister.deleteethadress(caller, addr);
-    switch (results) {
-      case (#ok(value)) {
-        return #ok(value);
-      };
-      case (#err(value)) {
-        return #err(value);
-      };
-    };
-  };
-
-  //function create an ethereum address
-  public shared ({ caller }) func createEthAddress() : async Result.Result<EthTypes.CreateAddressResponse, Text> {
-
-    let derivationPath = [Principal.toBlob(caller)];
-    let results = await usersCanister.useracc(caller);
-    switch (results) {
-      case (#ok(user)) {
-        if (not (Text.equal(user.address, ""))) return #err("address already created for the user");
-      };
-      case (#err(value))();
-    };
-
-    switch (await* EthereumAddress.create(eth_keyName, derivationPath, icEcdsaApi)) {
-      case (#err(msg)) {
-        return #err(msg);
-      };
-      case (#ok(res)) {
-
-        //store the new address
-        let results = await usersCanister.storePubKey(caller, res.0, res.1);
-
-        switch (results) {
-          case (#ok()) {
-            return #ok({
-              address = res.0;
-            });
-
-          };
-          case (#err(value)) {
-
-            return #err(value);
-          };
-        };
-      };
-    };
-  };
-
+ 
+  
   //store user information
   public shared ({ caller }) func storeUserInfo(email : Text) : async Result.Result<(), Text> {
     let results = await usersCanister.storeuseremail(caller, email);
@@ -206,13 +90,6 @@ switch(await monitorCanister.getAddressTransactions(user,token)) {
     };
   };
 
-  //get all user addresses
-  public func getAllUserEthAddresses(user : Principal) : async Result.Result<[EthAddress], Text> {
-    switch (await usersCanister.allethddresses(user)) {
-      case (#ok(value)) { return #ok(value) };
-      case (#err(error)) { return #err(error) };
-    };
-  };
 
 
   //get user's info, contains the user email, password,deviceCode eth address
@@ -223,39 +100,6 @@ switch(await monitorCanister.getAddressTransactions(user,token)) {
     };
   };
 
-  //sign a message to send to the blockchain
-  public shared ({ caller }) func signRawEvnTxn(
-    hex_raw_tx : [Nat8],
-    chain_id : Nat64,
-  ) : async Result.Result<EthTypes.SignTransactionResponse, Text> {
-
-    let derivationPath = [Principal.toBlob(caller)];
-    let user = switch (await usersCanister.useracc(caller)) {
-      case (#err(error)) { return #err(error) };
-      case (#ok(user)) { user };
-    };
-    switch (
-      await* EthereumTransaction.signRawTx(
-        hex_raw_tx,
-        chain_id,
-        eth_keyName,
-        derivationPath,
-        user.publicKey,
-        ecCtx,
-        icEcdsaApi,
-      )
-    ) {
-      case (#err(msg)) {
-        return #err(msg);
-      };
-      case (#ok(tx)) {
-        return #ok({
-          tx = tx.1;
-          tx_text = "0x" # EthereumAU.toText(tx.1);
-        });
-      };
-    };
-  };
 
   // function to send a raw eth txn using http outcalls to the blockchain.
   public shared ({ caller }) func sendEthTxnToNetwork(txnHash : Text) : async Result.Result<Text, Text> {
@@ -328,23 +172,4 @@ switch(await monitorCanister.getAddressTransactions(user,token)) {
     };
   };
 
-  ///get bitcoin address of the user
-  /// Returns the P2PKH address of this canister at a specific derivation path.
-  public shared ({ caller }) func get_p2pkh_address() : async BTCTypes.BitcoinAddress {
-    let derivationPath = [Blob.toArray(Principal.toBlob(caller))];
-    await BTCWallet.get_p2pkh_address(BTCNetwork, btc_keyName, derivationPath);
-  };
-
-  //get the bitcoin balance of the user
-  /// Returns the balance of the given Bitcoin address.
-  public func get_balance(address : BTCTypes.BitcoinAddress) : async BTCTypes.Satoshi {
-    await BTCAPI.get_balance(BTCNetwork, address);
-  };
-
-  /// Sends the given amount of bitcoin from this canister to the given address.
-  /// Returns the transaction ID.
-  public shared ({ caller }) func sendBTC(request : BTCTypes.SendRequest) : async Text {
-    let derivationPath = [Blob.toArray(Principal.toBlob(caller))];
-    BTCUtils.bytesToText(await BTCWallet.send(BTCNetwork, derivationPath, btc_keyName, request.destination_address, request.amount_in_satoshi));
-  };
 };

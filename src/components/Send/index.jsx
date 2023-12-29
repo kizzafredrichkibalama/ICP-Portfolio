@@ -99,12 +99,12 @@ const index = () => {
 
   return (
     <div
-      style={{ backgroundColor: '#2D3348', minHeight: '80vh' }}
-      className="flex w-full mt-4 justify-center items-center rounded-lg"
+      style={{ backgroundColor: '#2D3348', minHeight: '90vh' }}
+      className="flex w-full mt-10 justify-center items-center rounded-lg"
     >
       <div
-        style={{ backgroundColor: '#11131f', height: '70vh' }}
-        className="flex flex-col items-center rounded-lg gap-4 w-1/2"
+        style={{ backgroundColor: '#11131f', height: '80vh' }}
+        className="flex flex-col items-center rounded-lg gap-4 w-1/2 absolute"
       >
         <h1 className="flex p-4 text-2xl uppercase border-b-2 w-3/4 justify-center items-center ">
           Transfer
@@ -185,21 +185,22 @@ const index = () => {
                 />
                 <span className="text-white flex text-left">fee : 0.0001</span>
               </div>
-
-              <ErrorMessage
-                name="tokenRecipient"
-                component="div"
-                className="text-white"
-              />
-              <ErrorMessage
-                name="tokenAmount"
-                component="div"
-                className="text-white"
-              />
+              <div className="flex flex-col relative">
+                <ErrorMessage
+                  name="tokenRecipient"
+                  component="div"
+                  className="text-white"
+                />
+                <ErrorMessage
+                  name="tokenAmount"
+                  component="div"
+                  className="text-white"
+                />
+              </div>
 
               <button
                 type="submit"
-                className="rounded-md text-white jus text-2xl hover:bg-yellow-500 w-1/2 mb-8"
+                className="rounded-md text-white jus text-2xl hover:bg-yellow-500 w-1/2 mb-8 border"
                 disabled={isSubmitting}
               >
                 {isLoading ? <PropagateLoader color="#36d7b7" /> : 'Send'}
