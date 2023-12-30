@@ -1,0 +1,109 @@
+import React, { useEffect, useState } from 'react'
+import { useSelector } from 'react-redux'
+import useGetTokenBalances from '../Hooks/useGetTokenBalances'
+import { Formik, Form, Field, ErrorMessage } from 'formik'
+const index = () => {
+const tokens = ['ICP', 'ckBTC', 'CHAT', 'ckETH', 'HOT']
+const { principalID } = useSelector((state) => state.plug)
+const [selectedOption, setSelectedOption] = useState('')
+const { singleTokenBalance, getSingleTokenBalance } = useGetTokenBalances()
+const [trasferDetails, setTransferDetails] = useState({
+tokenRecipient: '',
+tokenAmount: '',
+})
+
+console.log(selectedOption, singleTokenBalance)
+async function handleDetailsChange(e) {
+setTransferDetails((prev) => ({
+...prev,
+[e.target.name]: e.target.value,
+}))
+}
+
+console.log('transfer details :', trasferDetails)
+
+function handleOptionChange(event) {
+setSelectedOption(event.target.value)
+}
+
+useEffect(() => {
+getSingleTokenBalance(selectedOption, principalID)
+}, [selectedOption])
+
+return (
+<div>
+  <h1>Any place in your app!</h1>
+
+  <Formik initialValues={{ tokenRecipient: '' , tokenAmount: '' }} validate={(values)=> {
+    const errors = {}
+
+    if (!values.tokenRecipient) {
+    errors.tokenRecipient = 'Required'
+    }
+    if (!values.tokenAmount) {
+    errors.tokenAmount = 'Required'
+    } else if (values.tokenAmount > singleTokenBalance) {
+    errors.tokenAmount = 'Amount exceeds he availabe balance'
+    }
+
+    return errors
+    }}
+    onSubmit={(values) => {
+    console.log('details :', values)
+    }}
+    >
+
+    <Form>
+      <Field type="text" name="tokenRecipient" className="text-2xl text-black" />
+
+      <ErrorMessage name="tokenRecipient" component="div" />
+
+      <Field type="number" name="tokenAmount" />
+
+      <ErrorMessage name="tokenAmount" component="div" />
+
+      <button type="submit" disabled={isSubmitting}>
+        Submit
+      </button>
+    </Form>
+
+  </Formik>
+</div>
+
+// <div // style={{ backgroundColor: '#2D3348' , minHeight: '80vh' }} //
+  className="flex w-full mt-4 justify-center items-center rounded-lg" //>
+  // <div // style={{ backgroundColor: '#11131f' , minHeight: '70vh' }} //
+    className="flex flex-col justify-center items-center rounded-lg gap-4 w-1/2" //>
+    // <h1>Transfer</h1>
+    // <div className="flex flex-col">
+      // <span>Account</span>
+      // <span>{principalID}</span>
+      // </div>
+    // {/* select token */}
+    // <div className="text-black">
+      // <select // id="options" // name="options" // value={selectedOption} // onChange={handleOptionChange} //
+        className="block w-full mt-1 rounded-md border-gray-300 " //>
+        // <option value="">--Please choose an option--</option>
+        // {tokens.map((tok) => {
+        // return (
+        // <option key={tok} value={tok}>
+          // {tok}
+          // </option>
+        // )
+        // })}
+        // </select>
+      // <span className="text-white">Balance : {singleTokenBalance}</span>
+      // </div>
+    // {/* enter recipient */}
+    // <input // id="tokenRecipient" // name="tokenRecipient" // onChange={handleDetailsChange} // type="text" //
+      placeholder="enter recipient" // className="w-3/4 text-black" // />
+    // {/* enter amount */}
+    // <input // onChange={handleDetailsChange} // type="number" // id="tokenAmount" // name="tokenAmount" //
+      placeholder="enter amount" // className="w-3/4 text-black" // />
+    // <button>Send</button>
+    // </div>
+  // </div>
+)
+}
+
+export default index

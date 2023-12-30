@@ -23,6 +23,7 @@ import {
   setActiveProvider,
   setUserIDs,
   setBackendActor,
+  setUserInfo,
 } from './features/plugSlice'
 import Dashboard from './components/Dashboard/Dashboard'
 import Index from './components/Index'
@@ -77,9 +78,13 @@ function App() {
       const addresses = await actor.getAllUserICPAddresses(
         Principal.fromText(connObj.principal),
       )
+      const userinfo = await actor.getUserAcc(
+        Principal.fromText(connObj.principal),
+      )
       console.log(addresses)
+      console.log('user info :', userinfo)
+      dispatch(setUserInfo(userinfo.ok))
       dispatch(setUserIDs(addresses.ok))
-      dispatch(setBackendActor(JSON.stringify(actor)))
       dispatch(setIsConnected(true))
       dispatch(setPrincipalID(connObj.principal))
     } catch (error) {

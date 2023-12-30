@@ -17,8 +17,7 @@ module{
   };
 
   public type User = {
-    address : Text;
-    publicKey : [Nat8];
+    firebase : Text;
     email : Text;
   };
 }

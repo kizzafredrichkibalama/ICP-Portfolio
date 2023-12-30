@@ -1,12 +1,21 @@
 import React from 'react'
-import { copyToClipboard, shortenString } from '../Utils/Functions'
+import {
+  copyToClipboard,
+  shorten17String,
+  shortenString,
+} from '../Utils/Functions'
 import { FaRegCopy } from 'react-icons/fa'
 import { useSelector } from 'react-redux'
 import UserIdTable from './UserIdTable'
 import AddNewModal from './AddNewModal'
+import SaveEmailModal from './setMyEmail'
+import SubscribeToNotifications from './Subscribe'
+import { RxUpdate } from 'react-icons/rx'
 
 const Profile = () => {
-  const { principalID, storedUserIDS } = useSelector((state) => state.plug)
+  const { principalID, storedUserIDS, userInfo } = useSelector(
+    (state) => state.plug,
+  )
   console.log('user ids :', storedUserIDS)
   return (
     <div
@@ -28,35 +37,32 @@ const Profile = () => {
             />
           </div>
         </div>
-        <div className="flex flex-col rounded-lg justify-center">
+        <div className="flex flex-col items-center rounded-lg justify-center">
           <h2 className="uppercase text-xl">Email Address</h2>
           <div className="flex gap-2 justify-center items-center">
-            <span>{shortenString(principalID)}</span>
-            <FaRegCopy
-              className="hover:cursor-pointer"
-              onClick={() => copyToClipboard(principalID)}
-            />
+            <span>
+              {userInfo ? (
+                userInfo?.email
+              ) : (
+                <div className="bg-red-500 flex p-1">No email found</div>
+              )}
+            </span>
           </div>
-          <button className="rounded-md border mt-4 hover:bg-yellow-500">
-            Update
-          </button>
+          <SaveEmailModal />
         </div>
         <div className="flex flex-col rounded-lg justify-center">
           <h2 className="uppercase text-xl">Firebase</h2>
           <div className="flex gap-2 justify-center items-center">
             <span>coming soon......</span>
-            <FaRegCopy
-              className="hover:cursor-pointer"
-              // onClick={() => copyToClipboard(principalID)}
-            />
           </div>
-          <button className="rounded-md border mt-4 hover:bg-yellow-500">
+          <button className="rounded-md border shadow-md shadow-black mt-4 flex gap-1 p-1 justify-center items-center hover:bg-yellow-500">
+            <RxUpdate />
             Update
           </button>
         </div>
         <div className="flex flex-col rounded-lg justify-center">
           <AddNewModal />
-          <AddNewModal />
+          <SubscribeToNotifications />
         </div>
       </div>
       <div className="mt-8">

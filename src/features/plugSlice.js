@@ -7,7 +7,8 @@ const initialState={
     activeProvider:null,
     changes:null,
     storedUserIDS:null,
-    backendActor:null
+    backendActor:null,
+    userInfo:null
 }
 const plugSlice = createSlice({
     name:'plug',
@@ -32,6 +33,9 @@ const plugSlice = createSlice({
         },
         setChanges:(state,{payload})=>{
             state.changes = payload
+        },
+        setUserInfo:(state,{payload})=>{
+            state.userInfo = payload
         }
 
     }
@@ -44,6 +48,7 @@ export const {
     setPrincipalID,
     setActiveProvider,
     setUserIDs,
-    setBackendActor
+    setBackendActor,
+    setUserInfo
 } = plugSlice.actions
 export default plugSlice.reducer

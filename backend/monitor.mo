@@ -75,68 +75,9 @@ public type GetAccountIdentifierTransactionsResponse = icpIndexTypes.GetAccountI
 
   let ic : MgtCanisterTypes.IC = actor ("aaaaa-aa");
 
-  //function to get the balance of one principal id
-  //change the logic to be for every ledger first not for every principal maybe-------------
-  public func get_icrc_token_balances(user : Principal) : async Result.Result<[(Text, [BalanceResponse])], Text> {
-    try {
-      let principalIDs = await _getAllIIcpIds(user);
-
-      var finalData = Buffer.Buffer<(Text, [BalanceResponse])>(0);
-      for (id in principalIDs.vals()) {
-        var buf = Buffer.Buffer<BalanceResponse>(0);
-
-        for (ledger in LedgerIDs.vals()) {
-          let ledActor : UniversalTypes.Actor = actor (ledger);
-          let ckb = await ledActor.icrc1_balance_of({
-            owner = Principal.fromText(id.address);
-            subaccount = null;
-          });
-
-          let _tokenName = await ledActor.icrc1_name();
-          let _tokenSymbol = await ledActor.icrc1_symbol();
-          let _tokenFee = await ledActor.icrc1_fee();
-          let _tokenDecimals = await ledActor.icrc1_decimals();
-
-          buf.add({
-            token_name = ?_tokenName;
-            token_symbol = ?_tokenSymbol;
-            token_decimals = ?_tokenDecimals;
-            token_fee = ?_tokenFee;
-            canister_id = ledger;
-            balance = ckb;
-          });
-        };
-
-        finalData.add((id.address, Iter.toArray<BalanceResponse>(buf.vals())));
-      };
-      return #ok(Buffer.toArray<(Text, [BalanceResponse])>(finalData));
-
-    } catch (error) {
-
-      return #err(Error.message(error));
-    };
-  };
-
-  //get the latest icrc token prices
-  public func getTokenPrices() : async [Oracle.LatestTokenRow] {
-    let result = await PriceFeed.get_latest();
-    return result;
-  };
-
-
-
-  public func getTokenData() : async [TokenExtended] {
-    let result = await PriceFeed.get_latest_extended();
-    return result;
-  };
-
-
- 
-
   //stop the timer id
   public func stopTimer(id : Nat) : async () {
     cancelTimer(id)
-
   };
 
   //start monitoring the ledger canisters
@@ -291,72 +232,7 @@ public type GetAccountIdentifierTransactionsResponse = icpIndexTypes.GetAccountI
 
   };
 
-  //get the transactions of principal ids of a specific token
-  //this works for principal ids and non icp tokens
-  public func getAddressTransactions(user : Principal, token : Text) : async Result.Result<[(Text, GetTransactions)], Text> {
-
-    let principalIDs = await _getAllIIcpIds(user);
-
-    let tempBuffer = Buffer.Buffer<(Text, IndexLedgerTypes.GetTransactions)>(0);
-    try {
-      let indexCanister = setIndexLedger(token);
-      let indexActor : IndexLedgerTypes.Actor = actor (indexCanister);
-      Debug.print("Here is the index canister" #indexCanister);
-    
-
-      for (id in principalIDs.vals()) {
-
-        let transactionResult = await indexActor.get_account_transactions({
-          max_results = 20;
-          start = null;
-          account = {
-            owner = Principal.fromText(id.address);
-            subaccount = null;
-          };
-        });
-        switch (transactionResult) {
-          case (#Ok(results)) {
-            tempBuffer.add((id.address, results));
-          };
-          case (#Err(error)) {};
-        };
-      };
-      return #ok(Buffer.toArray<(Text, IndexLedgerTypes.GetTransactions)>(tempBuffer));
-    } catch (error) {
-      return #err(Error.message(error));
-    };
-  };
-
-  public func  geticptransactions(user:Principal) : async Result.Result<[(Text,icpIndexTypes.GetAccountIdentifierTransactionsResponse)],Text> {
-    try{
-    let principalIDs = await _getAllIIcpIds(user);
-    let tempBuffer = Buffer.Buffer<(Text, IcpIndexTypes.GetAccountIdentifierTransactionsResponse)>(0);
-
-    for(id in principalIDs.vals()){
-      switch(await ICPIndex.get_account_transactions({
-        max_results = 20;
-          start = null;
-          account = {
-            owner = Principal.fromText(id.address);
-            subaccount = null;
-          };
-
-      })) {
-        case(#Ok(results)) {
-          tempBuffer.add((id.address, results));
-          };
-        case(#Err(error)) { 
-          return #err(error.message)
-        };
-      };
-    };
-      return #ok(Buffer.toArray<(Text,IcpIndexTypes.GetAccountIdentifierTransactionsResponse)>(tempBuffer));
-    }catch(error){
-                return #err(Error.message(error))
-
-
-    }
-  };
+ 
 
   private func setIndexLedger(tokenName : Text) : Text {
     switch (tokenName) {

@@ -34,7 +34,7 @@ const Dashboard = () => {
           Dashboard
         </div>
         <div
-          style={{ backgroundColor: '[#11131f]' }}
+          style={{ backgroundColor: '#11131f' }}
           className="flex gap-2 px-4 justify-between bg-transparent items-center rounded-md focus:outline-none focus:ring-2 mt-2 "
         >
           <input

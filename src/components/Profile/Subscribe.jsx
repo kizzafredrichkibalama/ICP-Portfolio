@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Formik, Form, Field, ErrorMessage } from 'formik'
 import { PropagateLoader } from 'react-spinners'
-import { IoMdClose, IoMdNotificationsOutline } from 'react-icons/io'
+import { IoMdClose } from 'react-icons/io'
 import { useConnect } from '@connect2ic/react'
 import {
   canisterId as backendCanisterID,
@@ -9,9 +9,9 @@ import {
 } from '../../declarations/backend'
 import { logDOM } from '@testing-library/react'
 import { setChanges } from '../../features/plugSlice'
-import { IoAdd } from 'react-icons/io5'
+import { IoMdNotificationsOutline } from 'react-icons/io'
 idlFactory
-function AddNewModal() {
+function SubscribeToNotifications() {
   const [isOpen, setIsOpen] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
 
@@ -34,8 +34,11 @@ function AddNewModal() {
           idlFactory,
         )
       //save the details.
-      const results = await actor.addICPAddress(data.nickName, data.princID)
-      console.log('save details :', results)
+      const results = await actor.subscribeToNotifications(
+        Principal.fromText(data.princID),
+        data.email_address,
+      )
+      console.log('subscribe to notification details :', results)
       if (results.ok) {
         setChanges(Math.random())
       }
@@ -50,10 +53,10 @@ function AddNewModal() {
       <button
         onClick={() => setIsOpen(true)}
         type="submit"
-        className="rounded-md border mt-4 shadow-md shadow-black flex gap-1 p-1 hover:bg-yellow-500 items-center"
+        className="rounded-md border mt-4 shadow-md shadow-black flex gap-1 p-1 hover:bg-yellow-500 justify-center items-center"
       >
-        <IoAdd className="text-left" size={20} />
-        <div>New ID</div>
+        <IoMdNotificationsOutline />
+        <div>Subscribe</div>
       </button>
       {isOpen && (
         <div className="fixed z-10 inset-0 overflow-y-auto ">
@@ -74,12 +77,12 @@ function AddNewModal() {
                 />
               </div>
               <Formik
-                initialValues={{ nickName: '', princID: '' }}
+                initialValues={{ princID: '', email_address: '' }}
                 validate={(values) => {
                   const errors = {}
 
-                  if (!values.nickName) {
-                    errors.nickName = 'nickname is required'
+                  if (!values.email_address) {
+                    errors.email_address = 'email address is required'
                   }
                   if (!values.princID) {
                     errors.princID = 'principal id is required'
@@ -94,23 +97,23 @@ function AddNewModal() {
               >
                 {({ isSubmitting }) => (
                   <Form className="flex  p-6 flex-col gap-4 w-3/4 justify-center items-center text-black">
-                    <h1 className="mt-2 text-white border-b-2 pb-1 flex w-full justify-center items-center text-xl">
-                      Add New Account
+                    <h1 className="mt-2 text-white flex border-b-2 pb-2 w-full justify-center items-center text-xl">
+                      Subscribe to Notifications
                     </h1>
                     <div className="flex-col gap-1 w-full">
                       <label
-                        htmlFor="nickName"
+                        htmlFor="email_address"
                         className="text-white text-left"
                       >
-                        enter nickname
+                        enter email address
                       </label>
                       <Field
                         type="text"
-                        name="nickName"
+                        name="email_address"
                         className="rounded-md h-8 w-full"
                       />
                       <ErrorMessage
-                        name="nickName"
+                        name="email_address"
                         component="span"
                         className="text-white bg-red-500 p-1"
                       />
@@ -133,12 +136,9 @@ function AddNewModal() {
 
                     <button
                       type="submit"
-                      style={{
-                        boxShadow: '0px 2px transparent',
-                      }}
                       className="rounded-md border text-white text-2xl hover:bg-yellow-500 w-1/2 mb-4"
                     >
-                      {isLoading ? <PropagateLoader color="#36d7b7" /> : 'Save'}
+                      {isLoading ? <PropagateLoader color="#36d7b7" /> : 'save'}
                     </button>
                   </Form>
                 )}
@@ -151,4 +151,4 @@ function AddNewModal() {
   )
 }
 
-export default AddNewModal
+export default SubscribeToNotifications

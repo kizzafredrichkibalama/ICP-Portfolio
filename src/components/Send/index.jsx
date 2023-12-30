@@ -172,6 +172,11 @@ const index = () => {
                   // placeholder="enter reciever principal"
                   className="rounded-md h-8 w-full"
                 />
+                <ErrorMessage
+                  name="tokenRecipient"
+                  component="span"
+                  className="text-white bg-red-500 p-1"
+                />
               </div>
               <div className="flex-col gap-1 w-full">
                 <label htmlFor="tokenAMount" className="text-white">
@@ -183,19 +188,17 @@ const index = () => {
                   // placeholder="enter token amount"
                   className="rounded-md h-8 text-black w-full"
                 />
-                <span className="text-white flex text-left">fee : 0.0001</span>
-              </div>
-              <div className="flex flex-col relative">
-                <ErrorMessage
-                  name="tokenRecipient"
-                  component="div"
-                  className="text-white"
-                />
-                <ErrorMessage
-                  name="tokenAmount"
-                  component="div"
-                  className="text-white"
-                />
+                <div className="flex gap-8">
+                  <span className="text-white flex text-left">
+                    fee : 0.0001
+                  </span>
+
+                  <ErrorMessage
+                    name="tokenAmount"
+                    component="span"
+                    className="text-white ml-16 bg-red-500 p-1"
+                  />
+                </div>
               </div>
 
               <button
