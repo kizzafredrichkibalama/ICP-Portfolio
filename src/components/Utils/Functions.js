@@ -216,27 +216,6 @@ export async function calculateFinalPortfolio(formattedPrices, tokenPrices) {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 export function fixDecimals(num) {
   let decimalPart = (num + '').split('.')[1];
   if (decimalPart === '0' || !decimalPart) {
@@ -405,3 +384,48 @@ export async function copyToClipboard(text) {
     console.error('Failed to copy: ', err);
   }
 }
+
+ export function getIndividualIdHoldings(token_symbol, data) {
+  console.log("datadata :",data);
+  const result = [];
+
+  for (let i = 0; i < data.length; i++) {
+    for (let j = 0; j < data[i].balances.length; j++) {
+      if (data[i].balances[j].token_symbol === token_symbol) {
+        result.push({
+          principal_id: data[i].principal_id,
+          amount: data[i].balances[j].amount / (10 ** data[i].balances[j].token_decimals),
+        });
+      }
+    }
+  }
+
+  return result;
+}
+
+
+
+
+
+
+
+// [
+//   {
+//     principal_id:"the8e",
+//     balances:[
+//       {
+//        amount: 30000,
+//        canister_id: "ajuq4-ruaaa-aaaaa-qaaga-cai",
+//        token_decimals: 8,
+//        token_symbol: "CHAT"
+//       },
+//       {
+//        amount: 80000,
+//        canister_id: "ajuq4-ruaaa-aaaaa-qaaga-cai",
+//        token_decimals: 8,
+//        token_symbol: "ckBTC"
+//       }
+
+//     ]
+//   }
+// ]

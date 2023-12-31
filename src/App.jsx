@@ -35,6 +35,7 @@ import Send from './components/Send/index'
 import Buy from './components/Buy/index'
 import SharedDashboard from './components/Dashboard/SharedDashboard'
 import Profile from './components/Profile'
+import TokenInfo from './components/TokenInfo'
 
 const client = createClient({
   providers: defaultProviders,
@@ -103,6 +104,7 @@ function App() {
             <Route path="send" element={<Send />} />
             <Route path="buy" element={<Buy />} />
             <Route path="profile" element={<Profile />} />
+            <Route path=":token" element={<TokenInfo />} />
           </Route>
         </Route>
       </Routes>

@@ -3,6 +3,7 @@ import { createActor } from '../Utils/createActor'
 import {
   CanisterIDS,
   ProcessData,
+  getIndividualIdHoldings,
   getLocalCanisterID,
   getUserICPNetWorth,
   transformDataArray,
@@ -20,7 +21,7 @@ const useGetTokenBalances = () => {
   const { tokenPrices } = useSelector((state) => state.info)
   const dispatch = useDispatch()
   const [singleTokenBalance, setSingleTokenBalance] = useState(null)
-
+  const [indIdHoldings, setIndIdHoldings] = useState(null)
   const userBalances = []
   async function getAllTokenBalances(userPrincipalsID) {
     console.log(userPrincipalsID)
@@ -72,6 +73,7 @@ const useGetTokenBalances = () => {
           userBalances,
           tokenPrices,
         )
+        console.log('user token holdings :', tokenHoldings)
         dispatch(setUserTokenBalances(userBalances))
         dispatch(setPortfolioValue(totalPortfolioValue))
         dispatch(setPercentageHoldings(tokenHoldings))
@@ -97,7 +99,24 @@ const useGetTokenBalances = () => {
     }
   }
 
-  return { getAllTokenBalances, singleTokenBalance, getSingleTokenBalance }
+  async function getIndHoldings(tokenName, userBalances) {
+    if (!userBalances || !tokenName) return
+
+    try {
+      const results = getIndividualIdHoldings(tokenName, userBalances)
+      setIndIdHoldings(results)
+    } catch (error) {
+      console.log('error in getting the individual id holdings :', error)
+    }
+  }
+
+  return {
+    getAllTokenBalances,
+    singleTokenBalance,
+    indIdHoldings,
+    getSingleTokenBalance,
+    getIndHoldings,
+  }
 }
 
 export default useGetTokenBalances

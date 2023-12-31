@@ -5,12 +5,13 @@ import useGetTokenTransactions from '../Hooks/useGetTokenTransactions'
 import Sidebar from '../Sidebar'
 import { CgProfile } from 'react-icons/cg'
 import { FaSearch } from 'react-icons/fa'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 const Dashboard = () => {
   const { storedUserIDS, changes } = useSelector((state) => state.plug)
   const { tokenPrices, percentagePerToken, totalPortfolioValue } = useSelector(
     (state) => state.info,
   )
+  const navigate = useNavigate()
   const { getAllTokenBalances } = useGetTokenBalances()
   const { getAllUserTransactions } = useGetTokenTransactions()
   console.log('user ids :', storedUserIDS, percentagePerToken)
@@ -86,7 +87,12 @@ const Dashboard = () => {
             {percentagePerToken &&
               Object.keys(percentagePerToken).map((token) => (
                 <tr key={token}>
-                  <td className="flex px-6 py-4 text-center">{token}</td>
+                  <td
+                    onClick={() => navigate(token)}
+                    className="flex px-6 py-4 text-center hover:cursor-pointer hover:text-yellow-300"
+                  >
+                    {token}
+                  </td>
                   <td className="text-center flex-col px-10">
                     {percentagePerToken[token].percentage}
                   </td>

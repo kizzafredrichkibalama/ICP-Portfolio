@@ -1,13 +1,15 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { extendedTokenData, tokenPriceData } from '../Utils/Data'
 import { setTokenPrices, setExtendedTokenData } from '../../features/infoSlice'
 import { createActor } from '../Utils/createActor'
 import { price_oracle_idlFactory } from '../Utils/priceOracle.did'
+import { formatExtendedTokenData } from '../Utils/Functions'
 const useGetTokenPrices = () => {
   //   const {} = useSelector((state) => state.info)
   const dispatch = useDispatch()
   const PRICE_ORACLE_CANISTER_ID = ''
+  const [tokenInfo, setTokenInfo] = useState(null)
   async function getTokenPrices() {
     try {
       if (process.env.DFX_NETWORK !== 'ic') {
@@ -33,7 +35,12 @@ const useGetTokenPrices = () => {
     }
   }
 
-  return { getTokenPrices }
+  async function getTokenInfo(tokenName, extendedTokenData) {
+    const results = formatExtendedTokenData(tokenName, extendedTokenData)
+    setTokenInfo(results)
+  }
+
+  return { getTokenPrices, getTokenInfo, tokenInfo }
 }
 
 export default useGetTokenPrices
