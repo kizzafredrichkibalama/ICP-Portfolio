@@ -216,14 +216,15 @@ export async function calculateFinalPortfolio(formattedPrices, tokenPrices) {
 
 
 
-export function fixDecimals(num) {
+export function fixDecimals(num,decimals) {
   let decimalPart = (num + '').split('.')[1];
   if (decimalPart === '0' || !decimalPart) {
-    return num.toFixed(0);
+    return num?.toFixed(0);
   } else {
-    return num.toFixed(3);
+    return num?.toFixed(decimals);
   }
 }
+
 
 export function transformTransactionArray(transactions) {
   //   const formattedPrices = [];

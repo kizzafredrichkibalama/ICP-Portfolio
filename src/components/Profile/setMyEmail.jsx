@@ -10,7 +10,7 @@ import {
 import { logDOM } from '@testing-library/react'
 import { setChanges } from '../../features/plugSlice'
 import { Principal } from '@dfinity/principal'
-import { IoAddCircle } from 'react-icons/io5'
+import { IoAddCircle, IoAddCircleOutline } from 'react-icons/io5'
 idlFactory
 function SaveEmailModal() {
   const [isOpen, setIsOpen] = useState(false)
@@ -56,7 +56,7 @@ function SaveEmailModal() {
         type="submit"
         className="rounded-md border mt-4 shadow-md shadow-black w-3/4 flex gap-1 p-1 hover:bg-yellow-500 justify-center items-center"
       >
-        <IoAddCircle />
+        <IoAddCircleOutline color="yellow" />
         Add Email
       </button>
       {isOpen && (

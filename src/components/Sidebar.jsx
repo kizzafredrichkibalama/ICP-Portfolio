@@ -6,6 +6,8 @@ import { LuSendHorizonal } from 'react-icons/lu'
 import { IoArrowBackOutline } from 'react-icons/io5'
 import { IoArrowForwardOutline } from 'react-icons/io5'
 import { IoMdAddCircleOutline } from 'react-icons/io'
+import { MdRocketLaunch } from 'react-icons/md'
+import { RiNftFill } from 'react-icons/ri'
 import { ConnectButton, ConnectDialog } from '@connect2ic/react'
 const Sidebar = () => {
   return (
@@ -21,10 +23,10 @@ const Sidebar = () => {
 
           <Link to="/dashboard">Dashboard</Link>
         </div>
-        <div className="flex items-center p-2 gap-4 hover:bg-yellow-500 focus:bg-red-200">
+        {/* <div className="flex items-center p-2 gap-4 hover:bg-yellow-500 focus:bg-red-200">
           <IoMdAddCircleOutline />
           <Link to="./buy">Buy</Link>
-        </div>
+        </div> */}
         <div className="flex items-center p-2 gap-4 hover:bg-yellow-500">
           <IoArrowForwardOutline />
           <Link to="./send">Send</Link>
@@ -32,6 +34,14 @@ const Sidebar = () => {
         <div className="flex items-center p-2 gap-4 hover:bg-yellow-500">
           <IoArrowBackOutline />
           <Link to="./recieve">Recieve</Link>
+        </div>
+        <div className="flex items-center p-2 gap-4 hover:bg-yellow-500">
+          <RiNftFill />
+          <Link to="./nfts">NFTs</Link>
+        </div>
+        <div className="flex items-center p-2 gap-4 hover:bg-yellow-500">
+          <MdRocketLaunch />
+          <Link to="./launch">Launch</Link>
         </div>
       </div>
       <div className="mt-8">

@@ -11,9 +11,7 @@ const SharedDashboard = () => {
       <Outlet />
     </div>
 
-    // <>
-
-    // </>
+    
   )
 }
 

@@ -14,6 +14,7 @@ const useGetTokenPrices = () => {
     try {
       if (process.env.DFX_NETWORK !== 'ic') {
         //load the dummy data
+        console.log('fetching onchain price data')
         dispatch(setTokenPrices(tokenPriceData))
         dispatch(setExtendedTokenData(extendedTokenData))
       } else {

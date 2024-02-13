@@ -1,7 +1,7 @@
 
 //only the token prices
 export const tokenPriceData = [
-  [["1", "0"], "BTC/USD", 27223.576963497],
+  [["1", "0"], "BTC/USD", 48223.576963497],
   [["2", "0"], "ETH/USD", 1634.022009615],
   [["3", "0"], "TICP/USD", 3.017254156],
   [["3", "0"], "ICP/USD", 3.017254156],
@@ -15,7 +15,7 @@ export const tokenPriceData = [
   [["6", "4"], "OGY/XDR", 0.007743479491079787],
   [["7", "3"], "ckBTC/ICP", 8934.566419356985],
   [["7", "0"], "TCKBTC/USD", 26957.8576608629],
-  [["7", "0"], "ckBTC/USD", 26957.8576608629],
+  [["7", "0"], "ckBTC/USD", 48223.576963497],
   [["7", "4"], "ckBTC/XDR", 20418.919475000454],
   [["8", "3"], "GHOST/ICP", 0.000016101932984926882],
   [["8", "0"], "GHOST/USD", 0.00004858362421840412],
@@ -81,7 +81,7 @@ export const extendedTokenData = [
     rates: [
       {
         to_token: '0',
-        rate: 43803.980397996,
+        rate: 48223.576,
         volume: 9115097054.688477,
         depth50: 0,
         depth2: 0,
@@ -159,7 +159,7 @@ export const extendedTokenData = [
     rates: [
       {
         to_token: '0',
-        rate: 5.1955195,
+        rate: 12.1955195,
         volume: 26833406.099067267,
         depth50: 0,
         depth2: 0,
@@ -361,7 +361,7 @@ export const extendedTokenData = [
       },
       {
         to_token: '0',
-        rate: 45178.915472931985,
+        rate: 48223.576472931985,
         volume: 182797.93132377497,
         depth50: 177981.22987684116,
         depth2: 7119.249195073647,
@@ -559,7 +559,7 @@ export const extendedTokenData = [
       },
       {
         to_token: '0',
-        rate: 0.2739697163029028,
+        rate: 0.9739697163029028,
         volume: 34313.3884423759,
         depth50: 107874.78164000626,
         depth2: 4314.991265600251,

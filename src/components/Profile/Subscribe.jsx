@@ -55,7 +55,7 @@ function SubscribeToNotifications() {
         type="submit"
         className="rounded-md border mt-4 shadow-md shadow-black flex gap-1 p-1 hover:bg-yellow-500 justify-center items-center"
       >
-        <IoMdNotificationsOutline />
+        <IoMdNotificationsOutline color="yellow" />
         <div>Subscribe</div>
       </button>
       {isOpen && (

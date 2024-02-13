@@ -53,10 +53,10 @@ const Profile = () => {
         <div className="flex flex-col rounded-lg justify-center">
           <h2 className="uppercase text-xl">Firebase</h2>
           <div className="flex gap-2 justify-center items-center">
-            <span>coming soon......</span>
+            <span>coming soon...</span>
           </div>
           <button className="rounded-md border shadow-md shadow-black mt-4 flex gap-1 p-1 justify-center items-center hover:bg-yellow-500">
-            <RxUpdate />
+            <RxUpdate color="yellow" />
             Update
           </button>
         </div>

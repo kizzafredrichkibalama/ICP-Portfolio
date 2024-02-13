@@ -42,55 +42,7 @@ import NewToken from './components/Launch/NewToken/NewToken'
 import NftPage from './components/Nfts/NftPage'
 import { useQuery } from '@tanstack/react-query'
 
-function App() {
-  const navigate = useNavigate()
-  const dispatch = useDispatch()
-  const { getTokenPrices } = useGetTokenPrices()
-  const { changes } = useSelector((state) => state.plug)
-
-  const connectionInstance = useConnect({
-    onConnect: async () => {},
-    onDisconnect: async () => {
-      dispatch(setIsConnected(false))
-      dispatch(setPrincipalID(null))
-      navigate('/')
-    },
-  })
-
-  // console.log(connectionInstance)
-  // console.log(connectionInstance.principal)
-
-  useEffect(() => {
-    if (!connectionInstance.principal || !connectionInstance.isConnected) return
-    initialAppLoad(connectionInstance)
-    getTokenPrices()
-    navigate('/dashboard')
-  }, [connectionInstance.isConnected, changes])
-
-  async function initialAppLoad(connObj) {
-    try {
-      //create the backend actor and fetch the user ids
-      console.log('conn onj :', connObj)
-      const { value: actor } = await connObj?.activeProvider?.createActor(
-        backendCanisterID,
-        idlFactory,
-      )
-      //get all the user addresses
-      const addresses = await actor.getAllUserICPAddresses(
-        Principal.fromText(connObj.principal),
-      )
-      const userinfo = await actor.getUserAcc(
-        Principal.fromText(connObj.principal),
-      )
-      dispatch(setUserInfo(userinfo.ok))
-      dispatch(setUserIDs(addresses.ok))
-      dispatch(setIsConnected(true))
-      dispatch(setPrincipalID(connObj.principal))
-    } catch (error) {
-      console.log('error in loading app contents for the first time :', error)
-    }
-  }
-
+const App2 = () => {
   return (
     <>
       <Routes>
@@ -114,4 +66,10 @@ function App() {
   )
 }
 
-export default App
+export default () => (
+  <BrowserRouter>
+    <Connect2ICProvider client={client}>
+      <App2 />
+    </Connect2ICProvider>
+  </BrowserRouter>
+)

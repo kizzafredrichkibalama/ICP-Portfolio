@@ -2,26 +2,12 @@
   "canisters": {
     "backend": {
       "type": "motoko",
-      "main": "backend/main.mo"    },
+      "main": "backend/main.mo"    
+    },
     "frontend": {
       "dependencies": ["backend"],
       "type": "assets",
       "source": ["dist/"]
-    },
-    "monitorCanister": {
-      "main": "backend/monitor.mo",
-      "type": "motoko",
-      "declarations": {
-        "node_compatibility": true
-      },
-      "dependencies": ["userCanister"]
-    },
-    "userCanister": {
-      "main": "backend/users.mo",
-      "type": "motoko",
-      "declarations": {
-        "node_compatibility": true
-      }
     },
      "CkBtc_ledger": {
       "type": "custom",
@@ -33,7 +19,6 @@
         }
       }
     },
-  
     "CkBtc_index": {
       "type": "custom",
       "candid": "https://raw.githubusercontent.com/dfinity/ic/95787355499f3be929f2ab302ed44cdad7c64061/rs/rosetta-api/icrc1/index/index.did",

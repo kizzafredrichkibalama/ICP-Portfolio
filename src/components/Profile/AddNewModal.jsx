@@ -52,7 +52,7 @@ function AddNewModal() {
         type="submit"
         className="rounded-md border mt-4 shadow-md shadow-black flex gap-1 p-1 hover:bg-yellow-500 items-center"
       >
-        <IoAdd className="text-left" size={20} />
+        <IoAdd className="text-left" size={20} color="yellow" />
         <div>New ID</div>
       </button>
       {isOpen && (

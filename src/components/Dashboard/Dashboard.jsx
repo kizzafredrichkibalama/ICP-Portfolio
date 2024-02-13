@@ -6,6 +6,7 @@ import Sidebar from '../Sidebar'
 import { CgProfile } from 'react-icons/cg'
 import { FaSearch } from 'react-icons/fa'
 import { Link, useNavigate } from 'react-router-dom'
+import { fixDecimals, shortenString } from '../Utils/Functions'
 const Dashboard = () => {
   const { storedUserIDS, changes } = useSelector((state) => state.plug)
   const { tokenPrices, percentagePerToken, totalPortfolioValue } = useSelector(
@@ -28,7 +29,7 @@ const Dashboard = () => {
   return (
     <div
       style={{ backgroundColor: '#2D3348', minHeight: '90vh' }}
-      className="flex flex-col w-full mt-10 rounded-lg min-h-screen px-4"
+      className="flex flex-col  items-center w-full mt-10 rounded-lg min-h-screen px-4"
     >
       <div className="flex justify-between items-center w-full pb-2">
         <div className="flex justify-center items-center text-xl px-2 text-bold">
@@ -56,55 +57,52 @@ const Dashboard = () => {
       {/* show the portfolio value */}
       <div className="flex justify-start text-left flex-col py-4 w-full">
         <div className="text-sm italic">Portfolio Value</div>
-        <span className="text-xl">${totalPortfolioValue}</span>
+        <span className="text-xl">${fixDecimals(totalPortfolioValue, 3)}</span>
       </div>
       {/* show the token holdings of the user */}
       <div
         style={{ backgroundColor: '#11131f' }}
-        className="overflow-x-auto rounded-lg w-full pt-4 flex justify-center items-center"
+        className="overflow-x-auto w-full justify-center items-center rounded-lg pt-4 flex "
       >
-        <table className="min-w-full divide-y divide-gray-200">
+        <table className="w-full divide-y divide-gray-200">
           <thead>
             <tr>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th className="px-2 py-3 text-left text-xs font-medium text-gray-500 uppercase">
                 Token
               </th>
-              <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase">
                 Percentage(%)
               </th>
-              <th className=" py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th className=" py-3 text-left text-xs font-medium text-gray-500 uppercase">
                 Balance
               </th>
-              <th className="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th className="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase">
                 Value (USD)
-              </th>
-              <th className="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Addresses
               </th>
             </tr>
           </thead>
-          <tbody className="flex-col justify-star w-full">
+          <tbody className="flex-col justify-center">
             {percentagePerToken &&
               Object.keys(percentagePerToken).map((token) => (
                 <tr key={token}>
                   <td
                     onClick={() => navigate(token)}
-                    className="flex px-6 py-4 text-center hover:cursor-pointer hover:text-yellow-300"
+                    className="flex px-2 py-4 text-center hover:cursor-pointer hover:text-yellow-300"
                   >
                     {token}
                   </td>
-                  <td className="text-center flex-col px-10">
-                    {percentagePerToken[token].percentage}
+                  <td className="text-center flex-col px-2">
+                    {fixDecimals(percentagePerToken[token].percentage, 5)}
                   </td>
                   <td className="text-left flex-col px-0">
-                    {percentagePerToken[token].balance}
+                    {fixDecimals(percentagePerToken[token].balance, 5)}
                   </td>
                   <td className="text-left flex-col px-3">
-                    {percentagePerToken[token].value}
+                    {fixDecimals(percentagePerToken[token].value, 5)}
                   </td>
-                  <td className="text-left flex-col px-3">
+                  {/* <td className="text-left flex-col px-3">
                     {percentagePerToken[token].value}
-                  </td>
+                  </td> */}
                 </tr>
               ))}
           </tbody>

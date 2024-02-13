@@ -12,8 +12,8 @@ dfx canister create CkBtc_index --network "${NETWORK}"
 dfx canister create ICP_index --network "${NETWORK}"
 dfx canister create Chat_index --network "${NETWORK}"
 
-dfx canister create monitorCanister --network "${NETWORK}"
-dfx canister create userCanister --network "${NETWORK}"
+# dfx canister create monitorCanister --network "${NETWORK}"
+# dfx canister create userCanister --network "${NETWORK}"
 dfx canister create frontend --network "${NETWORK}"
 dfx canister create backend --network "${NETWORK}"
 
@@ -164,11 +164,11 @@ dfx deploy internet_identity --network "${NETWORK}"
 
 ##deploy the users canister
 echo "Deploying the userCanister"
-dfx deploy userCanister --network "${NETWORK}" --mode=reinstall -y
+# dfx deploy userCanister --network "${NETWORK}" --mode=reinstall -y
 
 ## deploy the monitor canister
 echo "Deploying the  monitorCanister"
-dfx deploy monitorCanister --network "${NETWORK}" --mode=reinstall -y
+# dfx deploy monitorCanister --network "${NETWORK}" --mode=reinstall -y
 
 echo "Deploying the backend canister"
 ##dfx deploy backend --network "${NETWORK}" --argument '(variant{Testnet})'
@@ -194,12 +194,12 @@ echo "Done with the deployment"
 
 
 
-# dfx canister --network local call Chat_ledger icrc1_transfer '
+# dfx canister --network local call CkBtc_ledger icrc1_transfer '
 #   (record {
 #     to=(record {
-#       owner=(principal "ewbs4-24msb-e266v-n77o7-trfif-w6mqf-pfqyt-y4k7v-n4vyj-czljs-7qe")
+#       owner=(principal "jif4q-hudvo-pirwt-pxkg3-difyk-lyh2g-yceqv-go4vm-scp6g-jfxaw-dqe")
 #     });
-#     amount=500_000
+#     amount=100_000_000
 #   })
 # '
 
